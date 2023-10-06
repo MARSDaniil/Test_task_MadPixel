@@ -6,7 +6,7 @@ namespace Game {
     public class InGameUIManager :MonoBehaviour {
         public InGameManager inGameManager;
         [Header("UI Managers")]
-        [SerializeField] InputManager inputManager;
+        public InputManager inputManager;
         public void Init() {
             inputManager.Init(this);
         }

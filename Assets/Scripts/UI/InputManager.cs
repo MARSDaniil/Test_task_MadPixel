@@ -8,6 +8,10 @@ namespace Game.UI {
         [SerializeField] Camera camera;
 
         InGameUIManager inGameUIManager;
+        
+        public bool Waintig {
+            set { waiting = value; }
+        }
         private bool waiting;
 
         private bool isPressed = false;
@@ -28,7 +32,12 @@ namespace Game.UI {
                     && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.LeftArrow)
                     && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.RightArrow)) {
                     isPressed = false;
-                    inGameUIManager.inGameManager.cube.GetComponent<Cube>().MoveForward();
+
+                    Cube cube = inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>();
+                    cube.MoveForward();
+
+                    inGameUIManager.inGameManager.RechargeCubeCoroutine();
+
                 }
             }
         }
@@ -41,17 +50,19 @@ namespace Game.UI {
             var mousePosNearClipPlane = new Vector3(mousePos2D.x, mousePos2D.y, screenToCameraDistance);
             var worldPointPos = camera.ScreenToWorldPoint(mousePosNearClipPlane);
 
-            var cubePosition = inGameUIManager.inGameManager.cube.GetComponent<Cube>().Position * 0.15f / 3.85f;
+            var cubePosition = inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>().Position * 0.15f / 3.85f;
 
             if (cubePosition.x - worldPointPos.x > deltaSwipe)
-                inGameUIManager.inGameManager.cube.GetComponent<Cube>().MoveToSide(Vector3.left*2);
+                inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>().MoveToSide(Vector3.left*2);
             else if(cubePosition.x - worldPointPos.x < -deltaSwipe)
-                inGameUIManager.inGameManager.cube.GetComponent<Cube>().MoveToSide(Vector3.right*2);
-            else inGameUIManager.inGameManager.cube.GetComponent<Cube>().MoveToSide(Vector3.zero);
+                inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>().MoveToSide(Vector3.right*2);
+            else inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>().MoveToSide(Vector3.zero);
         }
         private void ArrowInput(Vector3 vector) {
             isPressed = true;
-            inGameUIManager.inGameManager.cube.GetComponent<Cube>().MoveToSide(vector);
+            inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>().MoveToSide(vector);
         }
+        
+
     }
 }
