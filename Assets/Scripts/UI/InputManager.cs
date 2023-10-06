@@ -10,7 +10,10 @@ namespace Game.UI {
         InGameUIManager inGameUIManager;
         
         public bool Waintig {
-            set { waiting = value; }
+            set { 
+                waiting = value;
+                isPressed = false;
+            }
         }
         private bool waiting;
 
