@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Game.CubeNS;
 namespace Game {
     public class InGameManager :MonoBehaviour {
-        [SerializeField] GameObject cube;
-        Rigidbody rigidbody;
+
+        public InGameUIManager inGameUIManager;
+
+        public GameObject cube;
+        public Cube cubeCube;
         private void Awake() {
             Init();
         }
         private void Init() {
-            /*
-            rigidbody = cube.GetComponent<Rigidbody>();
-            Vector3 vector  = new Vector3(0, 0, 1);
-            float speed = 1200f;
-            rigidbody.AddForce(vector * speed);
-            */
+            inGameUIManager.Init();
+            cubeCube = cube.GetComponent<Cube>();
         }
         
     }

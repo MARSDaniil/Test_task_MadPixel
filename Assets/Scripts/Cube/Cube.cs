@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-namespace Game.Cube {
+namespace Game.CubeNS {
     public class Cube :MonoBehaviour {
         Rigidbody rigidbody;
 
-        [SerializeField] List<TextMeshProUGUI> cubeNum;
-        [SerializeField] MeshRenderer meshRenderer;
-        [SerializeField] CubeInfo cubeInfo;
-
+        [SerializeField] CubeView cubeView;
+ 
         public int currNum;
         public int currIntOfArr;
 
         public int maxRandomStartInt = 4;
+        [Space]
+        [Header("Move")]
+        private float horizontalSpeed = 1300;
+        private float verticalSpeed = 300;
         private void Awake() {
             rigidbody = GetComponent<Rigidbody>();
             Init();
         }
         public void Init() {
 
-            if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
+            cubeView.Init();
+
             GenerateNum();
             SetNewParam();
         }
@@ -29,13 +31,23 @@ namespace Game.Cube {
             currIntOfArr = Random.Range(0, maxRandomStartInt);
 
         private void SetNewParam() {
-            currNum = cubeInfo.numOfCube[currIntOfArr];
-            int i = 0;
-            while (i < cubeNum.Count) {
-                cubeNum[i].text = currNum.ToString();
-                i++;
+            cubeView.SetNewParam(currIntOfArr);
+            currNum = (int)Mathf.Pow(2, currIntOfArr + 1);
+        }
+
+        public void MoveForward() => Move(Vector3.forward, horizontalSpeed);
+        public void MoveToSide(Vector3 vector) => rigidbody.velocity = vector;
+        public Vector3 Position {
+            get {return transform.position; }
+        }
+        private void MoveUp() => Move(Vector3.up, verticalSpeed);
+
+        private void Move(Vector3 vector, float speed) => rigidbody.AddForce(vector * speed);
+
+        private void OnCollisionEnter(Collision collision) {
+            if (collision.gameObject.TryGetComponent<Cube>(out Cube otherCube)) {
+                if (otherCube.currIntOfArr == currIntOfArr) Debug.Log("similar num");
             }
-            meshRenderer.material = cubeInfo.colorsOfCube[currIntOfArr];
         }
     }
 }
