@@ -104,7 +104,9 @@ namespace Game {
                 localCub.currIntOfArr++;
                 localCub.SetNewParam();
                 Score = localCub.currNum;
+                localCub.IsCollision = false;
                 mergeAudio.Play();
+
                 int i = 1;
                 do {
                     collisionCube[i].gameObject.SetActive(false);

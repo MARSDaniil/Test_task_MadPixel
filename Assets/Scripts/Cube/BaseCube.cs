@@ -48,9 +48,16 @@ namespace Game.CubeNS {
         protected void MoveUp() => Move(Vector3.up, verticalSpeed);
         protected void Move(Vector3 vector, float speed) => rigidbody.AddForce(vector * speed);
 
+
+        public bool IsCollision {
+            set { isCollision = value; }
+        }
+        private bool isCollision = false;
         protected virtual void OnCollisionEnter(Collision collision) {
             if (collision.gameObject.TryGetComponent<Cube>(out Cube otherCube)) {
-                if (otherCube.currIntOfArr == currIntOfArr) {
+                if (otherCube.currIntOfArr == currIntOfArr && !isCollision) {
+                    if (isCollision) return;
+                    isCollision = true;
                     rigidbody.constraints = RigidbodyConstraints.None;
                     SetValueToManagerList();
                     MoveUp();
