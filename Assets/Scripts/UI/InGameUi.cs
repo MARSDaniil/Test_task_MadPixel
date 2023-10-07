@@ -18,9 +18,9 @@ namespace Game.UI {
 
         private void OpenSetting() => inGameUIManager.OpenSetting();
 
-        public void SetScore(int score) {
+        public void SetScore(int score, int hightScore) {
             currScoreText.text = score.ToString();
-            recordScoreText.text = score.ToString(); //change
+            recordScoreText.text = "Hight score: " + hightScore.ToString();
         }
     }
 }

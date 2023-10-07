@@ -9,10 +9,10 @@ namespace Game.CubeNS {
             menuManager.collisionCube.Add(this.gameObject);
         }
 
-        protected override void FoundManager() {
-            GameObject gameObject = GameObject.Find("MenuManager");
-            menuManager = gameObject.GetComponent<MenuManager>();
+        public void FoundManager(MenuManager menu) {
+            menuManager = menu;
         }
+
         public override void Init() {
             base.Init();
         }

@@ -25,7 +25,7 @@ namespace Game.UI {
         }
 
         private void Update() {
-            if (!waiting) {
+            if (!waiting && !inGameUIManager.inGameManager.IsGameOver) {
                 if (Input.GetMouseButton(0)) MouseInput();
                 if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) 
                     ArrowInput(Vector3.left);
@@ -38,6 +38,7 @@ namespace Game.UI {
 
                     Cube cube = inGameUIManager.inGameManager.CubeGO.GetComponent<Cube>();
                     cube.MoveForward();
+                    cube.StartCoroutinePushed(inGameUIManager.inGameManager.TimeToChange);
 
                     inGameUIManager.inGameManager.RechargeCubeCoroutine();
 

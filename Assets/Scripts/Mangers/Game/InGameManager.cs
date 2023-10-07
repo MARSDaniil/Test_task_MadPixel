@@ -17,24 +17,35 @@ namespace Game {
         private GameObject cube;
         private Cube cubeCube;
 
+        public float TimeToChange {
+            get { return timeBetweenChangeCube; }
+        }
         [SerializeField] private float timeBetweenChangeCube = 1f;
         [Header("Start Generation Prefabs")]
         [SerializeField] List<Vector3> startPositionCubes;
 
         [Header("Boards")]
-        [SerializeField] Vector2 boards;
+        [SerializeField] Vector3 boards;
 
         [HideInInspector] public List<GameObject> collisionCube;
 
         //score
 
         public int Score {
-            set { score += value; }
+            set { 
+                score += value; 
+                if(score > GetScore()) {
+                    PlayerPrefs.SetInt("cubeScore", score);
+                }
+                inGameUIManager.inGameUi.SetScore(score, GetScore());
+            }
             get { return score; }
         }
-        private int score;
+        private int score = 0;
 
-        public Vector2 Boards {
+
+        private int GetScore() { return PlayerPrefs.GetInt("cubeScore", 0); }
+        public Vector3 Boards {
             get { return boards; }
         }
         private void Awake() {
@@ -44,11 +55,14 @@ namespace Game {
             inGameUIManager.Init();
             NewCube();
             GenerateOtherCubs();
+
+            inGameUIManager.inGameUi.SetScore(score, GetScore());
         }
         
         public void NewCube() {
             cube = InstantiateGameObjects(cubePrefab, startPosition);
             cubeCube = cube.GetComponent<Cube>();
+            cubeCube.FoundManager(this);
             cubeCube.Init();
         }
 
@@ -58,7 +72,10 @@ namespace Game {
                 if (RandomBool()) {
                     GameObject gameObject = InstantiateGameObjects(cubePrefab, startPositionCubes[i]);
                     gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                    gameObject.GetComponent<Cube>().Init();
+                    Cube localCube = gameObject.GetComponent<Cube>();
+                    localCube.FoundManager(this);
+                    localCube.Init();
+                    localCube.IsPushed = true;
                 }
                 i++;
             }
@@ -83,7 +100,8 @@ namespace Game {
                 Cube localCub = collisionCube[0].GetComponent<Cube>();
                 localCub.currIntOfArr++;
                 localCub.SetNewParam();
-                score += localCub.currNum;
+                Score = localCub.currNum;
+
                 int i = 1;
                 do {
                     collisionCube[i].gameObject.SetActive(false);
@@ -94,6 +112,16 @@ namespace Game {
             }
         }
 
+
+        public void GameOver() {
+            isGameOver = true;
+            Debug.Log("game over");
+        }
+
+        public bool IsGameOver {
+            get { return isGameOver; }
+        }
+        private bool isGameOver = false;
         public void RestartGame() => ChangeScene(0);
         public void BackToMenu() => ChangeScene(-1);
         private void ChangeScene(int i) => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + i);

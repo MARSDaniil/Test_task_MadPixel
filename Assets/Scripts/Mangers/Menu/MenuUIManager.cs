@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+namespace Menu {
+    public class MenuUIManager :MonoBehaviour {
 
-public class MenuUIManager : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        public MenuManager menuManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [SerializeField] Button playGameButton;
+        public void Init() {
+            playGameButton.onClick.AddListener(PlayGame);
+        }
+
+        private void PlayGame() => menuManager.PlayGame();
     }
 }

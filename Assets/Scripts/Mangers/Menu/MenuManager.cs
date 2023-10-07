@@ -1,11 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Game.CubeNS;
 namespace Menu {
     public class MenuManager :MonoBehaviour {
-        [HideInInspector] public List<GameObject> collisionCube;
+        [SerializeField] MenuUIManager menuUIManager;
 
+        [HideInInspector] public List<GameObject> collisionCube;
+        [SerializeField] List<MenuCube> menuCubesList;
+
+        private void Awake() {
+            Init();
+            menuUIManager.Init();
+        }
+        private void Init() {
+            int i = 0;
+            while (i < menuCubesList.Count) {
+                menuCubesList[i].FoundManager(this);
+                i++;
+            }
+        }
         private void Update() {
             if (collisionCube.Count > 0) {
                 MenuCube localCub = collisionCube[0].GetComponent<MenuCube>();
@@ -20,5 +35,9 @@ namespace Menu {
                 collisionCube.Clear();
             }
         }
+
+        public void PlayGame() => ChangeScene(1);
+
+        private void ChangeScene(int i) => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + i);
     }
 }

@@ -14,18 +14,18 @@ namespace Game.CubeNS {
         [Header("Move")]
         private float horizontalSpeed = 1300;
         private float verticalSpeed = 300;
+
         private void Awake() {
             rigidbody = GetComponent<Rigidbody>();
         }
         public virtual void Init() {
-            FoundManager();
+           // FoundManager();
             cubeView.Init();
 
             GenerateNum();
             SetNewParam();
         }
 
-        protected virtual void FoundManager() { }
 
         protected void GenerateNum() =>
             currIntOfArr = Random.Range(0, maxRandomStartInt);
