@@ -9,10 +9,12 @@ namespace Game {
         public InputManager inputManager;
         public InGameUi inGameUi;
         public SettingMenu settingMenu;
+        public GameOver gameOver;
         public void Init() {
             inputManager.Init(this);
             inGameUi.Init(true);
             settingMenu.Init(false);
+            gameOver.Init(false);
         }
 
         public void OpenSetting() {
@@ -20,6 +22,7 @@ namespace Game {
 
             inGameUi.Close();
             settingMenu.Open();
+            gameOver.Close();
         }
 
         public void CloseSetting() {
@@ -27,6 +30,18 @@ namespace Game {
 
             inGameUi.Open();
             settingMenu.Close();
+            gameOver.Close();
+        }
+
+        public void GameOver() {
+            inputManager.Waintig = true;
+
+            inGameUi.Close();
+            settingMenu.Close();
+            gameOver.Open();
+
+            gameOver.gameOverAudio.Play();
+
         }
     }
 }

@@ -14,7 +14,8 @@ namespace Game.CubeNS {
         [Header("Move")]
         private float horizontalSpeed = 1300;
         private float verticalSpeed = 300;
-
+        [Header("Music")]
+        [SerializeField] AudioSource dropAudio;
         private void Awake() {
             rigidbody = GetComponent<Rigidbody>();
         }
@@ -35,7 +36,11 @@ namespace Game.CubeNS {
             currNum = (int)Mathf.Pow(2, currIntOfArr + 1);
         }
 
-        public void MoveForward() => Move(Vector3.forward, horizontalSpeed);
+        public virtual void MoveForward() {
+            Move(Vector3.forward, horizontalSpeed);
+            dropAudio.Play();
+        }
+
         public void MoveToSide(Vector3 vector) => rigidbody.velocity = vector;
         public Vector3 Position {
             get { return transform.position; }

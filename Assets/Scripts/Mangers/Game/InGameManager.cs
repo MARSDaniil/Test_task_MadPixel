@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Game.CubeNS;
+using Game.Audio;
 namespace Game {
     public class InGameManager :MonoBehaviour {
 
         public InGameUIManager inGameUIManager;
+        public AudioSwitcher audioSwitcher;
         [Header("MainCube")]
         [SerializeField] GameObject cubePrefab;
         [SerializeField] private Vector3 startPosition = new Vector3(0, 0.5f, 6.20f);
@@ -17,6 +19,7 @@ namespace Game {
         private GameObject cube;
         private Cube cubeCube;
 
+        [SerializeField] AudioSource mergeAudio;
         public float TimeToChange {
             get { return timeBetweenChangeCube; }
         }
@@ -101,7 +104,7 @@ namespace Game {
                 localCub.currIntOfArr++;
                 localCub.SetNewParam();
                 Score = localCub.currNum;
-
+                mergeAudio.Play();
                 int i = 1;
                 do {
                     collisionCube[i].gameObject.SetActive(false);
@@ -115,7 +118,7 @@ namespace Game {
 
         public void GameOver() {
             isGameOver = true;
-            Debug.Log("game over");
+            inGameUIManager.GameOver();
         }
 
         public bool IsGameOver {

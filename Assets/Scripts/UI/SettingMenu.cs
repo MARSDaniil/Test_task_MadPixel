@@ -42,6 +42,8 @@ namespace Game.UI {
         private void MusicSwitcher(bool value) {
             musicOff.gameObject.SetActive(value);
             musicOn.gameObject.SetActive(!value);
+
+            inGameUIManager.inGameManager.audioSwitcher.SwitchVolume(value);
         }
 
     }

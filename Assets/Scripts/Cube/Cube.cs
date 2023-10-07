@@ -22,6 +22,7 @@ namespace Game.CubeNS {
             inGameManager.collisionCube.Add(this.gameObject);
         }
 
+
         private void Update() {
             if (inGameManager.IsGameOver) return;
             if(IsPushed == true && transform.position.z < inGameManager.Boards.z) {
